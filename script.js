@@ -16,7 +16,7 @@ window.addEventListener('load', function() {
     document.getElementById('carosel7').src = 'images/carosel7.jpg';
 });
 
-
+//This function will handle the carousel 
 document.addEventListener('DOMContentLoaded', function () {
     const carousel = document.querySelector('.carousel');
     const slides = carousel.querySelector('.slides');
