@@ -1,5 +1,3 @@
-
-
 window.addEventListener('load', function() {
     document.getElementById('image1').src = 'images/first.jpg';
     document.getElementById('image2').src = 'images/second.jpg';
@@ -23,28 +21,45 @@ document.addEventListener('DOMContentLoaded', function () {
     const carousel = document.querySelector('.carousel');
     const slides = carousel.querySelector('.slides');
     const slideCount = slides.querySelectorAll('.slide').length;
-    const perPage = 5; // Number of products per page
+    let perPage = getPerPage();
     let currentPage = 1;
 
+    function getPerPage() {
+        const width = window.innerWidth;
+        if (width <= 480) {
+            return 1;  
+        } else if (width <= 768) {
+            return 2;  
+        } else {
+            return 5;  
+        }
+    }
+
     function showPage(page) {
-        const startPosition = (page - 1) * perPage;
-        const endPosition = startPosition + perPage;
-        slides.style.transform = `translateX(-${startPosition * (100 / perPage)}%)`;
+        perPage = getPerPage();
+        const maxPages = Math.ceil(slideCount / perPage);
+        if (page < 1) {
+            page = 1;
+        } else if (page > maxPages) {
+            page = maxPages;
+        }
+        currentPage = page;
+        const startPosition = (currentPage - 1) * perPage;
+        slides.style.transform = `translateX(-${(100 / perPage) * startPosition}%)`;
     }
 
     showPage(currentPage);
 
+    window.addEventListener('resize', function() {
+        showPage(currentPage);
+    });
+
     document.querySelector('.prev').addEventListener('click', function () {
-        if (currentPage > 1) {
-            currentPage--;
-            showPage(currentPage);
-        }
+        showPage(currentPage - 1);
     });
 
     document.querySelector('.next').addEventListener('click', function () {
-        if (currentPage < Math.ceil(slideCount / perPage)) {
-            currentPage++;
-            showPage(currentPage);
-        }
+        showPage(currentPage + 1);
     });
 });
+
